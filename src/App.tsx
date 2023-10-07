@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BookmarkLogoIcon, FacebookIcon, TwitterIcon } from "./icons";
 import clsx from "clsx";
 
@@ -8,7 +8,7 @@ export default function App() {
       <Header />
       <main>
         <section className='px-8 py-10'>
-          <div className='max-w-[1200px] mx-auto flex flex-col lg:flex-row-reverse gap-10 lg:min-h-[500px]'>
+          <div className='max-w-[1100px] mx-auto flex flex-col lg:flex-row-reverse gap-10 lg:min-h-[500px]'>
             <figure id='illustration-hero' className='relative flex-1'>
               <img
                 src='/images/illustration-hero.svg'
@@ -17,7 +17,7 @@ export default function App() {
               />
             </figure>
             <div className='flex-1 text-center lg:text-left grid gap-6 lg:flex lg:flex-col lg:justify-center'>
-              <h1 className='text-neutral-very-dark-blue text-3xl lg:text-5xl font-bold'>
+              <h1 className='text-neutral-very-dark-blue text-3xl md:text-5xl font-bold'>
                 A Simple Bookmark Manager
               </h1>
               <p className='text-neutral-grayish-blue font-light lg:text-lg lg:max-w-md'>
@@ -25,11 +25,28 @@ export default function App() {
                 websites. Open a new browser tab and see your sites load
                 instantly. Try it for free.
               </p>
-              <div className='flex justify-center lg:justify-start gap-6'>
+              <div className='flex justify-center lg:justify-start gap-4 lg:gap-6'>
                 <CTAButton variant='blue'>Get it on Chrome</CTAButton>
                 <CTAButton variant='white'>Get it on Firefox</CTAButton>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className='px-8 my-24'>
+          <div className='max-w-[1100px] mx-auto grid gap-8 md:gap-16'>
+            <div className='text-center'>
+              <h2 className='text-neutral-very-dark-blue text-2xl md:text-3xl font-bold'>
+                Features
+              </h2>
+              <p className='text-neutral-grayish-blue mt-4 md:mt-6 max-w-lg md:mx-auto lg:text-lg'>
+                Our aim is to make it quick and easy for you to access your
+                favourite websites. Your bookmarks sync between your devices so
+                you can access them on the go.
+              </p>
+            </div>
+
+            <FeatureList />
           </div>
         </section>
       </main>
@@ -43,12 +60,36 @@ function Header() {
   function handleOpen() {
     setIsExpanded(true);
   }
+
   function handleClose() {
     setIsExpanded(false);
   }
+
+  useEffect(() => {
+    if (isExpanded) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.removeAttribute("style");
+    }
+  }, [isExpanded]);
+
+  const handleKeydown = useCallback((e: KeyboardEvent) => {
+    if (e.code === "Escape") {
+      setIsExpanded(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeydown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  }, [handleKeydown]);
+
   return (
     <header className='px-8'>
-      <div className='flex items-center justify-between h-24 max-w-[1200px] mx-auto'>
+      <div className='flex items-center justify-between h-24 max-w-[1100px] mx-auto'>
         <a
           href='#'
           title='Go to bookmark home'
@@ -71,7 +112,7 @@ function Header() {
           )}
         </div>
         {/* Mobile Navigation */}
-        <MobileNavigation isExpanded={isExpanded} />
+        <MobileNavigation isExpanded={isExpanded} handleClose={handleClose} />
         {/* desktop navigation */}
         <DesktopNavigation />
       </div>
@@ -124,7 +165,13 @@ const NAVIGATION_LIST: NavigationItemProps[] = [
   { href: "#", label: "login" },
 ];
 
-function MobileNavigation({ isExpanded }: { isExpanded: boolean }) {
+function MobileNavigation({
+  isExpanded,
+  handleClose,
+}: {
+  isExpanded: boolean;
+  handleClose: () => void;
+}) {
   return (
     <div
       className={clsx(
@@ -137,7 +184,12 @@ function MobileNavigation({ isExpanded }: { isExpanded: boolean }) {
         <ul>
           {NAVIGATION_LIST.map(({ href, label }) => {
             return (
-              <MobileNavigationItem key={label} href={href} label={label} />
+              <MobileNavigationItem
+                key={label}
+                href={href}
+                label={label}
+                handleClose={handleClose}
+              />
             );
           })}
         </ul>
@@ -165,9 +217,14 @@ function MobileNavigation({ isExpanded }: { isExpanded: boolean }) {
 type NavigationItemProps = {
   label: string;
   href: string;
+  handleClose?: () => void;
 };
 
-function MobileNavigationItem({ href, label }: NavigationItemProps) {
+function MobileNavigationItem({
+  href,
+  label,
+  handleClose,
+}: NavigationItemProps) {
   return (
     <li
       className={clsx(
@@ -176,7 +233,7 @@ function MobileNavigationItem({ href, label }: NavigationItemProps) {
       )}
     >
       <a
-        href={href}
+        href={`${href}${label}`}
         className={clsx(
           "uppercase tracking-widest text-xl font-light transition-colors duration-300 ease-in-out",
           "flex w-full justify-center py-2 hover:text-primary-soft-red",
@@ -184,6 +241,7 @@ function MobileNavigationItem({ href, label }: NavigationItemProps) {
             ? "border-2 border-white rounded hover:border-primary-soft-red"
             : ""
         )}
+        onClick={handleClose}
       >
         {label}
       </a>
@@ -243,5 +301,118 @@ function CTAButton({
     >
       {children}
     </button>
+  );
+}
+
+type Image = {
+  url: string;
+  width: number;
+  height: number;
+};
+
+const FEATURE_LIST: Record<
+  FeatureListControl,
+  { title: string; summary: string; image: Image }
+> = {
+  "simple bookmarking": {
+    title: "Bookmark in one click",
+    summary:
+      "Organize your bookmarks however you like. Our simple drag-and-drop interface gives you complete control over how you manage your favourite sites.",
+    image: {
+      height: 346,
+      url: "simple-bookmarking.svg",
+      width: 536,
+    },
+  },
+  "easy sharing": {
+    title: "Share your bookmarks",
+    summary:
+      "Easily share your bookmarks and collections with others. Create a shareable link that you can send at the click of a button.",
+    image: {
+      height: 440,
+      url: "easy-sharing.svg",
+      width: 380,
+    },
+  },
+  "speedy searching": {
+    title: "Intelligent search",
+    summary:
+      "Our powerful search feature will help you find saved sites in no time at all. No need to trawl through all of your bookmarks.",
+    image: {
+      height: 416,
+      url: "speedy-searching.svg",
+      width: 478,
+    },
+  },
+};
+
+const FEATURE_LIST_CONTROLS = [
+  "simple bookmarking",
+  "speedy searching",
+  "easy sharing",
+] as const;
+
+type FeatureListControl = (typeof FEATURE_LIST_CONTROLS)[number];
+
+function FeatureList() {
+  const [currentTabFeature, setCurrentTabFeature] = useState<number>(0);
+
+  const selectedFeatureControl: FeatureListControl =
+    FEATURE_LIST_CONTROLS[currentTabFeature];
+  const { image, summary, title } = FEATURE_LIST[selectedFeatureControl];
+
+  return (
+    <div className='flex flex-col md:items-center gap-16'>
+      <ul className='flex flex-col md:flex-row'>
+        {FEATURE_LIST_CONTROLS.map((label, index) => {
+          return (
+            <li
+              key={label}
+              className='first:border-t first:border-b last:border-t last:border-b md:first:border-t-0 md:last:border-t-0 md:border-b border-neutral-grayish-blue flex justify-center'
+            >
+              <button
+                type='button'
+                name={label}
+                className='relative py-4 md:px-12 capitalize text-neutral-grayish-blue transition-colors duration-300 ease-in-out hover:text-neutral-very-dark-blue'
+                onClick={() => setCurrentTabFeature(index)}
+              >
+                {label}
+                <div
+                  className={clsx(
+                    "absolute w-[90%] md:w-full h-1 bottom-0 left-1/2 -translate-x-1/2 scale-x-0 transition-transform duration-500 ease-in-out origin-left",
+                    FEATURE_LIST_CONTROLS[currentTabFeature] === label
+                      ? "bg-primary-soft-red scale-x-100"
+                      : ""
+                  )}
+                />
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className='flex flex-col lg:flex-row items-center'>
+        <figure className='flex-1 shrink-0 feature-image relative'>
+          <img
+            src={`/images/${image.url}`}
+            alt={title}
+            className='w-full'
+            height={image.url}
+            width={image.width}
+          />
+          <div className='absolute top-[3rem] lg:top-[5rem] right-[6rem] lg:right-[10rem] bg-primary-soft-blue w-[120%] h-[95%] -z-10 rounded-br-[5rem] lg:rounded-br-[10rem]' />
+        </figure>
+
+        <div className='flex-1 shrink-0 mt-24 lg:mt-0 flex flex-col gap-6 text-center lg:text-left'>
+          <h3 className='text-neutral-very-dark-blue text-2xl md:text-3xl font-bold lg:ml-20'>
+            {title}
+          </h3>
+          <p className='text-neutral-grayish-blue lg:ml-20'>{summary}</p>
+          <div className='hidden lg:block lg:ml-20'>
+            <CTAButton variant='blue'>More Info</CTAButton>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
