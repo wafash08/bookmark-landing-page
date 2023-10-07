@@ -6,4 +6,44 @@
   html {
     font-family: "Rubik", sans-serif;
   }
+
+  body {
+    overflow-x: hidden;
+  }
+}
+
+#illustration-hero::before {
+  content: "";
+  position: absolute;
+  width: 120%;
+  height: 100%;
+  background-image: url("./assets/illustration-hero.svg");
+  top: 0;
+  left: 0;
+  background-repeat: no-repeat;
+  display: none;
+}
+
+#illustration-hero::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  background-color: #5368df;
+  top: 3rem;
+  left: 3rem;
+  z-index: -10;
+  border-bottom-left-radius: 6rem;
+}
+
+@media (min-width: 1024px) {
+  #illustration-hero::before {
+    display: block;
+  }
+  #illustration-hero::after {
+    top: 9rem;
+    left: 10rem;
+    border-bottom-left-radius: 16rem;
+    height: 65%;
+  }
 }

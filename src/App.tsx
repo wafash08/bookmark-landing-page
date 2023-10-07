@@ -6,6 +6,33 @@ export default function App() {
   return (
     <>
       <Header />
+      <main>
+        <section className='px-8 py-10'>
+          <div className='max-w-[1200px] mx-auto flex flex-col lg:flex-row-reverse gap-10 lg:min-h-[500px]'>
+            <figure id='illustration-hero' className='relative flex-1'>
+              <img
+                src='/images/illustration-hero.svg'
+                alt='A simple bookmark manager'
+                className='lg:hidden'
+              />
+            </figure>
+            <div className='flex-1 text-center lg:text-left grid gap-6 lg:flex lg:flex-col lg:justify-center'>
+              <h1 className='text-neutral-very-dark-blue text-3xl lg:text-5xl font-bold'>
+                A Simple Bookmark Manager
+              </h1>
+              <p className='text-neutral-grayish-blue font-light lg:text-lg lg:max-w-md'>
+                A clean and simple interface to organize your favourite
+                websites. Open a new browser tab and see your sites load
+                instantly. Try it for free.
+              </p>
+              <div className='flex justify-center lg:justify-start gap-6'>
+                <CTAButton variant='blue'>Get it on Chrome</CTAButton>
+                <CTAButton variant='white'>Get it on Firefox</CTAButton>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </>
   );
 }
@@ -101,7 +128,7 @@ function MobileNavigation({ isExpanded }: { isExpanded: boolean }) {
   return (
     <div
       className={clsx(
-        "md:hidden absolute w-full h-screen bg-neutral-very-dark-blue/90 top-0 left-0 pt-24 px-8 pb-14 grid justify-between grid-rows-2 grid-cols-1",
+        "z-10 md:hidden absolute w-full h-screen bg-neutral-very-dark-blue/90 top-0 left-0 pt-24 px-8 pb-14 grid justify-between grid-rows-2 grid-cols-1",
         "transition-all duration-300 ease-in-out",
         isExpanded ? "translate-x-0 visible" : "-translate-x-full invisible"
       )}
@@ -193,5 +220,28 @@ function DesktopNavigationItem({ href, label }: NavigationItemProps) {
         {label}
       </a>
     </li>
+  );
+}
+
+function CTAButton({
+  children,
+  variant,
+}: {
+  children: React.ReactNode;
+  variant: "blue" | "white";
+}) {
+  return (
+    <button
+      type='button'
+      className={clsx(
+        "px-4 py-3 rounded shadow-xl text-sm transition-colors duration-300 ease-in-out",
+        variant === "blue" &&
+          "text-white bg-primary-soft-blue hover:bg-white hover:text-primary-soft-blue border border-primary-soft-blue",
+        variant === "white" &&
+          "text-neutral-grayish-blue bg-white border border-white hover:border-neutral-grayish-blue"
+      )}
+    >
+      {children}
+    </button>
   );
 }
