@@ -14,7 +14,7 @@ export default function App() {
     <>
       <Header />
       <main>
-        <section className='px-8 my-24'>
+        <section className='px-8 my-16'>
           <div className='max-w-[1100px] mx-auto flex flex-col lg:flex-row-reverse gap-10 lg:min-h-[500px]'>
             <figure id='illustration-hero' className='relative flex-1'>
               <img
@@ -57,7 +57,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className='px-8 my-24 lg:my-36'>
+        <section className='px-8 my-24 lg:my-40'>
           <div className='grid gap-10 lg:gap-14 max-w-[1100px] mx-auto'>
             <div className='text-center'>
               <h2 className='text-neutral-very-dark-blue font-bold text-2xl md:text-3xl'>
@@ -72,7 +72,10 @@ export default function App() {
             <ExtensionList />
           </div>
         </section>
+
+        <section></section>
       </main>
+      <Footer />
     </>
   );
 }
@@ -181,7 +184,7 @@ function CloseButton({ handleClose }: { handleClose: () => void }) {
   );
 }
 
-const NAVIGATION_LIST: NavigationItemProps[] = [
+const NAVIGATION_LIST: Omit<NavigationItemProps, "handleClose">[] = [
   { href: "#", label: "features" },
   { href: "#", label: "pricing" },
   { href: "#", label: "contact" },
@@ -294,7 +297,7 @@ function DesktopNavigationItem({ href, label }: NavigationItemProps) {
         className={clsx(
           "uppercase font-light tracking-widest text-sm transition-colors duratio300 ease-in-out",
           label === "login"
-            ? "px-7 py-3 rounded border border-primary-soft-red shadow-md bg-primary-soft-red text-white hover:bg-white hover:text-primary-soft-red"
+            ? "px-7 py-3 rounded border-2 border-primary-soft-red shadow-md bg-primary-soft-red text-white hover:bg-white hover:text-primary-soft-red"
             : "hover:text-primary-soft-red"
         )}
       >
@@ -319,9 +322,9 @@ function CTAButton({
       className={clsx(
         "py-3 rounded shadow-xl text-sm transition-colors duration-300 ease-in-out",
         variant === "blue" &&
-          "text-white bg-primary-soft-blue hover:bg-white hover:text-primary-soft-blue border border-primary-soft-blue",
+          "text-white bg-primary-soft-blue hover:bg-white hover:text-primary-soft-blue border-2 border-primary-soft-blue",
         variant === "white" &&
-          "text-neutral-grayish-blue bg-white border border-white hover:border-neutral-grayish-blue",
+          "text-neutral-grayish-blue bg-white border-2 border-white hover:border-neutral-grayish-blue",
         fullWidth ? "w-full" : "px-4"
       )}
     >
@@ -394,12 +397,12 @@ function FeatureList() {
           return (
             <li
               key={label}
-              className='first:border-t first:border-b last:border-t last:border-b md:first:border-t-0 md:last:border-t-0 md:border-b border-neutral-grayish-blue flex justify-center'
+              className='group first:border-t first:border-b last:border-t last:border-b md:first:border-t-0 md:last:border-t-0 md:border-b border-neutral-grayish-blue flex justify-center'
             >
               <button
                 type='button'
                 name={label}
-                className='relative py-4 md:px-12 capitalize text-neutral-grayish-blue transition-colors duration-300 ease-in-out hover:text-neutral-very-dark-blue'
+                className='relative py-4 md:px-12 capitalize text-neutral-grayish-blue transition-colors duration-300 ease-in-out hover:text-neutral-very-dark-blue group-hover:text-primary-soft-red'
                 onClick={() => setCurrentTabFeature(index)}
               >
                 {label}
@@ -490,5 +493,52 @@ function ExtensionList() {
         );
       })}
     </ul>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className='bg-neutral-very-dark-blue py-10 px-8'>
+      <div className='mx-auto max-w-[1100px] flex flex-col items-center md:flex-row gap-8 md:gap-16'>
+        <a href='#' title='Go to bookmark homepage'>
+          <span className='sr-only'>Bookmark Logo</span>
+          <BookmarkLogoIcon color='white' />
+        </a>
+        <div className='flex-1 flex flex-col md:flex-row md:justify-between gap-8'>
+          <nav>
+            <ul className='flex flex-col md:flex-row items-center gap-6 md:gap-8'>
+              {NAVIGATION_LIST.map(({ href, label }) => {
+                if (label !== "login") {
+                  return (
+                    <li key={label}>
+                      <a
+                        href={href}
+                        className='text-white uppercase tracking-widest font-light text-sm transition-colors duration-300 ease-in-out hover:text-primary-soft-red'
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  );
+                }
+              })}
+            </ul>
+          </nav>
+          <ul className='flex gap-8 justify-center items-center'>
+            <li>
+              <a href='#'>
+                <span className='sr-only'>facebook</span>
+                <FacebookIcon />
+              </a>
+            </li>
+            <li>
+              <a href='#'>
+                <span className='sr-only'>twitter</span>
+                <TwitterIcon />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
   );
 }
