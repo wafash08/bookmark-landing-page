@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { BookmarkLogoIcon, FacebookIcon, TwitterIcon } from "./icons";
+import {
+  BookmarkLogoIcon,
+  ChromeIcon,
+  FacebookIcon,
+  FirefoxIcon,
+  OperaIcon,
+  TwitterIcon,
+} from "./icons";
 import clsx from "clsx";
 
 export default function App() {
@@ -7,7 +14,7 @@ export default function App() {
     <>
       <Header />
       <main>
-        <section className='px-8 py-10'>
+        <section className='px-8 my-24'>
           <div className='max-w-[1100px] mx-auto flex flex-col lg:flex-row-reverse gap-10 lg:min-h-[500px]'>
             <figure id='illustration-hero' className='relative flex-1'>
               <img
@@ -47,6 +54,22 @@ export default function App() {
             </div>
 
             <FeatureList />
+          </div>
+        </section>
+
+        <section className='px-8 my-24 lg:my-36'>
+          <div className='grid gap-10 lg:gap-14 max-w-[1100px] mx-auto'>
+            <div className='text-center'>
+              <h2 className='text-neutral-very-dark-blue font-bold text-2xl md:text-3xl'>
+                Download the extension
+              </h2>
+              <p className='text-neutral-grayish-blue mt-4 max-w-lg mx-auto lg:text-lg'>
+                We’ve got more browsers in the pipeline. Please do let us know
+                if you’ve got a favourite you’d like us to prioritize.
+              </p>
+            </div>
+
+            <ExtensionList />
           </div>
         </section>
       </main>
@@ -284,19 +307,22 @@ function DesktopNavigationItem({ href, label }: NavigationItemProps) {
 function CTAButton({
   children,
   variant,
+  fullWidth,
 }: {
   children: React.ReactNode;
   variant: "blue" | "white";
+  fullWidth?: boolean;
 }) {
   return (
     <button
       type='button'
       className={clsx(
-        "px-4 py-3 rounded shadow-xl text-sm transition-colors duration-300 ease-in-out",
+        "py-3 rounded shadow-xl text-sm transition-colors duration-300 ease-in-out",
         variant === "blue" &&
           "text-white bg-primary-soft-blue hover:bg-white hover:text-primary-soft-blue border border-primary-soft-blue",
         variant === "white" &&
-          "text-neutral-grayish-blue bg-white border border-white hover:border-neutral-grayish-blue"
+          "text-neutral-grayish-blue bg-white border border-white hover:border-neutral-grayish-blue",
+        fullWidth ? "w-full" : "px-4"
       )}
     >
       {children}
@@ -397,7 +423,7 @@ function FeatureList() {
             src={`/images/${image.url}`}
             alt={title}
             className='w-full'
-            height={image.url}
+            height={image.height}
             width={image.width}
           />
           <div className='absolute top-[3rem] lg:top-[5rem] right-[6rem] lg:right-[10rem] bg-primary-soft-blue w-[120%] h-[95%] -z-10 rounded-br-[5rem] lg:rounded-br-[10rem]' />
@@ -414,5 +440,55 @@ function FeatureList() {
         </div>
       </div>
     </div>
+  );
+}
+
+const EXTENSION_LIST = [
+  {
+    label: "chrome",
+    version: 62,
+    icon: <ChromeIcon />,
+  },
+  {
+    label: "firefox",
+    version: 55,
+    icon: <FirefoxIcon />,
+  },
+  {
+    label: "opera",
+    version: 46,
+    icon: <OperaIcon />,
+  },
+];
+
+function ExtensionList() {
+  return (
+    <ul className='flex flex-col lg:flex-row lg:items-start gap-10'>
+      {EXTENSION_LIST.map(({ icon, label, version }) => {
+        return (
+          <li
+            key={label}
+            className='flex-1 shadow-lg rounded-xl lg:even:mt-16 lg:last:mt-32 border border-transparent border-dashed transition-colors duration-300 ease-in-out hover:border-neutral-grayish-blue'
+          >
+            <div className='flex flex-col p-10 gap-8 items-center'>
+              {icon}
+              <div className='text-center'>
+                <h3 className='text-neutral-very-dark-blue text-xl mb-2 font-bold'>
+                  Add to {label}
+                </h3>
+                <p className='text-neutral-grayish-blue'>
+                  Minimum version {version}
+                </p>
+              </div>
+            </div>
+            <div className='p-8 border-t border-neutral-grayish-blue border-dashed flex'>
+              <CTAButton variant='blue' fullWidth={true}>
+                Add & Install Extension
+              </CTAButton>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
