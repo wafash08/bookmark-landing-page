@@ -13,6 +13,9 @@ export default {
           "very-dark-blue": "#252b46",
         },
       },
+      transitionProperty: {
+        "accordion-arrow": "transform, border-color",
+      },
     },
   },
   plugins: [],

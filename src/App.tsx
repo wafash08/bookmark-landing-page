@@ -73,7 +73,24 @@ export default function App() {
           </div>
         </section>
 
-        <section></section>
+        <section className='px-8 my-24'>
+          <div className='grid gap-10 md:gap-14 max-w-[1100px] mx-auto'>
+            <div className='text-center'>
+              <h2 className='text-neutral-very-dark-blue font-bold text-2xl md:text-3xl'>
+                Frequently Asked Questions
+              </h2>
+              <p className='text-neutral-grayish-blue mt-4 max-w-lg mx-auto lg:text-lg'>
+                Here are some of our FAQs. If you have any other questions you’d
+                like answered please feel free to email us.
+              </p>
+            </div>
+
+            <FaqAccordion />
+            <div className='flex justify-center'>
+              <CTAButton variant='blue'>More Info</CTAButton>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </>
@@ -325,7 +342,7 @@ function CTAButton({
           "text-white bg-primary-soft-blue hover:bg-white hover:text-primary-soft-blue border-2 border-primary-soft-blue",
         variant === "white" &&
           "text-neutral-grayish-blue bg-white border-2 border-white hover:border-neutral-grayish-blue",
-        fullWidth ? "w-full" : "px-4"
+        fullWidth ? "w-full" : "px-5"
       )}
     >
       {children}
@@ -540,5 +557,53 @@ function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+const FAQ_LIST = [
+  {
+    question: "What is Bookmark?",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tincidunt justo eget ultricies fringilla. Phasellus blandit ipsum quis quam ornare mattis.",
+  },
+  {
+    question: "How can I request a new browser?",
+    answer:
+      "Vivamus luctus eros aliquet convallis ultricies. Mauris augue massa, ultricies non ligula. Suspendisse imperdiet. Vivamus luctus eros aliquet convallis ultricies. Mauris augue massa, ultricies non ligula. Suspendisse imperdie tVivamus luctus eros aliquet convallis ultricies. Mauris augue massa, ultricies non ligula. Suspendisse imperdiet.",
+  },
+  {
+    question: "Is there a mobile app?",
+    answer:
+      "Sed consectetur quam id neque fermentum accumsan. Praesent luctus vestibulum dolor, ut condimentum urna vulputate eget. Cras in ligula quis est pharetra mattis sit amet pharetra purus. Sed sollicitudin ex et ultricies bibendum.",
+  },
+  {
+    question: "What about other Chromium browsers?",
+    answer:
+      "Integer condimentum ipsum id imperdiet finibus. Vivamus in placerat mi, at euismod dui. Aliquam vitae neque eget nisl gravida pellentesque non ut velit.",
+  },
+];
+
+function FaqAccordion() {
+  return (
+    <div className='mx-auto w-full max-w-lg'>
+      {FAQ_LIST.map(({ answer, question }) => {
+        return (
+          <details
+            key={question}
+            className='cursor-pointer marker:content-none group border-b border-neutral-grayish-blue/50'
+          >
+            <summary className='flex items-center justify-between py-6 pr-1 text-neutral-very-dark-blue text-lg transition-colors hover:text-primary-soft-red'>
+              {question}
+              <span className='block w-3 h-3 border-b-2 border-r-2 border-primary-soft-blue rotate-45 transition-accordion-arrow duration-300 ease-in-out group-open:rotate-[225deg] group-open:border-primary-soft-red' />
+            </summary>
+            <div className='pb-8 pt-2'>
+              <p className='leading-relaxed text-neutral-grayish-blue'>
+                {answer}
+              </p>
+            </div>
+          </details>
+        );
+      })}
+    </div>
   );
 }
