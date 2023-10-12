@@ -14,7 +14,7 @@ export default function App() {
     <>
       <Header />
       <main>
-        <section className='px-8 my-16'>
+        <section className='px-8 my-16 overflow-x-hidden'>
           <div className='max-w-[1100px] mx-auto flex flex-col lg:flex-row-reverse gap-10 lg:min-h-[500px]'>
             <figure id='illustration-hero' className='relative flex-1'>
               <img
@@ -89,6 +89,21 @@ export default function App() {
             <div className='flex justify-center'>
               <CTAButton variant='blue'>More Info</CTAButton>
             </div>
+          </div>
+        </section>
+
+        <section className='bg-primary-soft-blue px-8 py-16 mt-24 text-white'>
+          <div className='w-full max-w-lg mx-auto grid gap-8'>
+            <div className='text-center'>
+              <p className='uppercase tracking-[.25em] text-xs'>
+                35,000+ already joined
+              </p>
+              <h3 className='text-2xl md:text-3xl mt-3 md:mt-6'>
+                Stay up-to-date with what we’re doing
+              </h3>
+            </div>
+
+            <ContactForm />
           </div>
         </section>
       </main>
@@ -327,21 +342,25 @@ function DesktopNavigationItem({ href, label }: NavigationItemProps) {
 function CTAButton({
   children,
   variant,
-  fullWidth,
+  fullWidth = false,
+  type = "button",
 }: {
   children: React.ReactNode;
-  variant: "blue" | "white";
+  variant: "blue" | "white" | "red";
   fullWidth?: boolean;
+  type?: "button" | "submit";
 }) {
   return (
     <button
-      type='button'
+      type={type}
       className={clsx(
         "py-3 rounded shadow-xl text-sm transition-colors duration-300 ease-in-out",
         variant === "blue" &&
           "text-white bg-primary-soft-blue hover:bg-white hover:text-primary-soft-blue border-2 border-primary-soft-blue",
         variant === "white" &&
           "text-neutral-grayish-blue bg-white border-2 border-white hover:border-neutral-grayish-blue",
+        variant === "red" &&
+          "text-white bg-primary-soft-red border-2 border-primary-soft-red hover:bg-white hover:text-primary-soft-red",
         fullWidth ? "w-full" : "px-5"
       )}
     >
@@ -590,9 +609,9 @@ function FaqAccordion() {
         return (
           <details
             key={question}
-            className='cursor-pointer marker:content-none group border-b border-neutral-grayish-blue/50'
+            className='cursor-pointer marker:content-none group border-b md:first:border-t border-neutral-grayish-blue/50'
           >
-            <summary className='flex items-center justify-between py-6 pr-1 text-neutral-very-dark-blue text-lg transition-colors hover:text-primary-soft-red'>
+            <summary className='flex items-center justify-between gap-1 py-6 pr-1 text-neutral-very-dark-blue text-lg transition-colors hover:text-primary-soft-red break-words'>
               {question}
               <span className='block w-3 h-3 border-b-2 border-r-2 border-primary-soft-blue rotate-45 transition-accordion-arrow duration-300 ease-in-out group-open:rotate-[225deg] group-open:border-primary-soft-red' />
             </summary>
@@ -605,5 +624,60 @@ function FaqAccordion() {
         );
       })}
     </div>
+  );
+}
+
+function ContactForm() {
+  const [isError, setIsError] = useState<boolean>(false);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formElement = e.target as HTMLFormElement;
+    const isValid = formElement.checkValidity();
+    setIsError(!isValid);
+    if (isValid) {
+      const formData = new FormData(formElement);
+      console.log(formData.get("email"));
+    }
+  }
+
+  return (
+    <form
+      className={clsx(
+        "flex flex-col md:flex-row md:items-center md:gap-4 group",
+        isError ? "gap-4 md:gap-0" : "gap-0"
+      )}
+      noValidate={true}
+      onSubmit={handleSubmit}
+    >
+      <p className='h-full md:flex-[3] relative'>
+        <label htmlFor='email'>
+          <input
+            type='email'
+            name='email'
+            id='email'
+            placeholder='Enter your email address'
+            className='relative z-10 w-full px-5 py-3 rounded md:flex-[3] text-neutral-very-dark-blue group-invalid:border-2 group-invalid:border-primary-soft-red group-invalid:focus:outline-none'
+            autoComplete='email'
+            required
+          />
+        </label>
+        <span
+          className={clsx(
+            "md:absolute md:top-0 md:left-0 block w-full h-fit py-2 px-4 bg-primary-soft-red rounded-b italic text-sm transition-transform duration-200 ease-in-out",
+            isError
+              ? "-translate-y-1 md:translate-y-[130%] visible"
+              : "-translate-y-full md:translate-y-0 invisible"
+          )}
+        >
+          Whoops, make sure it's an email
+        </span>
+      </p>
+      <div className='flex-1'>
+        <CTAButton type='submit' variant='red' fullWidth>
+          Contact Us
+        </CTAButton>
+      </div>
+    </form>
   );
 }
