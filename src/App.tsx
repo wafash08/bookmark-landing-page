@@ -635,49 +635,56 @@ function ContactForm() {
     const formElement = e.target as HTMLFormElement;
     const isValid = formElement.checkValidity();
     setIsError(!isValid);
-    if (isValid) {
-      const formData = new FormData(formElement);
-      console.log(formData.get("email"));
-    }
+    // if (isValid) {
+    // send the email
+    //   const formData = new FormData(formElement);
+    // }
   }
 
   return (
-    <form
-      className={clsx(
-        "flex flex-col md:flex-row md:items-center md:gap-4 group",
-        isError ? "gap-4 md:gap-0" : "gap-0"
-      )}
-      noValidate={true}
-      onSubmit={handleSubmit}
-    >
-      <p className='h-full md:flex-[3] relative'>
-        <label htmlFor='email'>
-          <input
-            type='email'
-            name='email'
-            id='email'
-            placeholder='Enter your email address'
-            className='relative z-10 w-full px-5 py-3 rounded md:flex-[3] text-neutral-very-dark-blue group-invalid:border-2 group-invalid:border-primary-soft-red group-invalid:focus:outline-none'
-            autoComplete='email'
-            required
-          />
-        </label>
-        <span
+    <>
+      <form
+        className={clsx("flex flex-col md:flex-row md:items-center gap-4")}
+        noValidate={true}
+        onSubmit={handleSubmit}
+      >
+        <p className='h-full md:flex-[3] relative'>
+          <label htmlFor='email'>
+            <input
+              type='email'
+              name='email'
+              id='email'
+              placeholder='Enter your email address'
+              className={clsx(
+                "relative z-10 w-full px-5 py-3 rounded md:flex-[3] text-neutral-very-dark-blue border-2 transition-colors",
+                isError
+                  ? "border-primary-soft-red focus:outline-none"
+                  : "border-transparent"
+              )}
+              autoComplete='email'
+              required
+            />
+          </label>
+          <span
+            className={clsx(
+              "absolute top-0 left-0 flex items-center w-full h-fit py-2 px-4 bg-primary-soft-red rounded-b italic text-sm transition-transform duration-200 ease-in-out",
+              isError ? "translate-y-12 visible" : "translate-y-0 invisible"
+            )}
+          >
+            Whoops, make sure it's an email
+          </span>
+        </p>
+        <div
           className={clsx(
-            "md:absolute md:top-0 md:left-0 block w-full h-fit py-2 px-4 bg-primary-soft-red rounded-b italic text-sm transition-transform duration-200 ease-in-out",
-            isError
-              ? "-translate-y-1 md:translate-y-[130%] visible"
-              : "-translate-y-full md:translate-y-0 invisible"
+            "flex-1 transition-transform duration-200 ease-in-out",
+            isError && "translate-y-8 md:translate-y-0"
           )}
         >
-          Whoops, make sure it's an email
-        </span>
-      </p>
-      <div className='flex-1'>
-        <CTAButton type='submit' variant='red' fullWidth>
-          Contact Us
-        </CTAButton>
-      </div>
-    </form>
+          <CTAButton type='submit' variant='red' fullWidth>
+            Contact Us
+          </CTAButton>
+        </div>
+      </form>
+    </>
   );
 }
