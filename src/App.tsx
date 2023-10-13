@@ -644,7 +644,7 @@ function ContactForm() {
   return (
     <>
       <form
-        className={clsx("flex flex-col md:flex-row md:items-center gap-4")}
+        className='flex flex-col md:flex-row md:items-center gap-4'
         noValidate={true}
         onSubmit={handleSubmit}
       >
@@ -656,7 +656,7 @@ function ContactForm() {
               id='email'
               placeholder='Enter your email address'
               className={clsx(
-                "relative z-10 w-full px-5 py-3 rounded md:flex-[3] text-neutral-very-dark-blue border-2 transition-colors",
+                "relative z-10 w-full px-5 py-[10px] rounded md:flex-[3] text-neutral-very-dark-blue border-2 transition-colors",
                 isError
                   ? "border-primary-soft-red focus:outline-none"
                   : "border-transparent"
