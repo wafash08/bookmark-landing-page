@@ -14,7 +14,7 @@ export default function App() {
     <>
       <Header />
       <main>
-        <section className='px-8 my-16 overflow-x-hidden'>
+        <section className='px-8 py-20 overflow-x-hidden'>
           <div className='max-w-[1100px] mx-auto flex flex-col lg:flex-row-reverse gap-10 lg:min-h-[500px]'>
             <figure id='illustration-hero' className='relative flex-1'>
               <img
@@ -43,7 +43,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className='px-8 my-24'>
+        <section className='px-8 py-20'>
           <div className='max-w-[1100px] mx-auto grid gap-8 md:gap-16'>
             <div className='text-center'>
               <h2 className='text-neutral-very-dark-blue text-2xl md:text-3xl font-bold'>
@@ -60,7 +60,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className='px-8 my-24 lg:my-40'>
+        <section className='px-8 py-20'>
           <div className='grid gap-10 lg:gap-14 max-w-[1100px] mx-auto'>
             <div className='text-center'>
               <h2 className='text-neutral-very-dark-blue font-bold text-2xl md:text-3xl'>
@@ -76,7 +76,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className='px-8 my-24'>
+        <section className='px-8 py-20'>
           <div className='grid gap-10 md:gap-14 max-w-[1100px] mx-auto'>
             <div className='text-center'>
               <h2 className='text-neutral-very-dark-blue font-bold text-2xl md:text-3xl'>
@@ -95,7 +95,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className='bg-primary-soft-blue px-8 py-16 mt-24 text-white'>
+        <section className='bg-primary-soft-blue px-8 py-16 text-white'>
           <div className='w-full max-w-lg mx-auto grid gap-8'>
             <div className='text-center'>
               <p className='uppercase tracking-[.25em] text-xs'>
