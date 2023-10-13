@@ -579,6 +579,23 @@ function Footer() {
           </ul>
         </div>
       </div>
+      <div className='mx-auto max-w-[1100px]'>
+        <p className='text-center text-white mt-10 tracking-wider'>
+          Challenge by{" "}
+          <a
+            href='https://www.frontendmentor.io?ref=challenge'
+            target='_blank'
+            className='hover:underline'
+          >
+            Frontend Mentor
+          </a>
+          . Coded by{" "}
+          <a href='https://github.com/wafash08' className='hover:underline'>
+            Wafa Saefulhaq{" "}
+          </a>
+          .
+        </p>
+      </div>
     </footer>
   );
 }
