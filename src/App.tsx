@@ -672,7 +672,7 @@ function ContactForm() {
           <span
             className={clsx(
               "absolute top-0 left-0 flex items-center w-full h-fit py-2 px-4 bg-primary-soft-red rounded-b italic text-sm transition-transform duration-200 ease-in-out",
-              isError ? "translate-y-12 visible" : "translate-y-0 invisible"
+              isError ? "translate-y-11 visible" : "translate-y-0 invisible"
             )}
           >
             Whoops, make sure it's an email
