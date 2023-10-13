@@ -21,6 +21,7 @@ export default function App() {
                 src='/images/illustration-hero.svg'
                 alt='A simple bookmark manager'
                 className='lg:hidden'
+                loading='lazy'
               />
             </figure>
             <div className='flex-1 text-center lg:text-left grid gap-6 lg:flex lg:flex-col lg:justify-center'>
@@ -464,6 +465,7 @@ function FeatureList() {
             className='w-full'
             height={image.height}
             width={image.width}
+            loading='lazy'
           />
           <div className='absolute top-[3rem] lg:top-[5rem] right-[6rem] lg:right-[10rem] bg-primary-soft-blue w-[120%] h-[95%] -z-10 rounded-br-[5rem] lg:rounded-br-[10rem]' />
         </figure>
