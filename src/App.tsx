@@ -22,6 +22,8 @@ export default function App() {
                 alt='A simple bookmark manager'
                 className='lg:hidden'
                 loading='lazy'
+                width={657}
+                height={466}
               />
             </figure>
             <div className='flex-1 text-center lg:text-left grid gap-6 lg:flex lg:flex-col lg:justify-center'>
